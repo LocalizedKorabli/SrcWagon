@@ -166,7 +166,7 @@ def upload_to_r2(local_path, remote_key):
         print(f"  [跳过上传] R2 环境变量未完整配置")
         return False
 
-    remote = f"s3://{bucket}/srcwagon/{remote_key}"
+    remote = f"s3://{bucket}/fonts/{remote_key}"
     print(f"  上传: {remote_key} ...", end=" ", flush=True)
 
     result = subprocess.run([
