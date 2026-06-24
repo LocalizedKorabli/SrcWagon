@@ -6,15 +6,15 @@
     },
     "SrcWagon-TWProvince": {
       "version": "26.6.24",
-      "sha256": "ebeb0064e7425a2d77f3aae092967c89cb64850d4e072b0539a5280a3fb5cdd1"
+      "sha256": "8476cb346617612619e7866aa675e45a5c738af97de662d6b23cb407d88638d9"
     },
     "SrcWagon-HKSAR": {
       "version": "26.6.24",
-      "sha256": "89b271455e86554fd9451b85fc522cfc95189cc0d38eea6728baa2b15cec6e8f"
+      "sha256": "f6e0d78c88cd495f2e385cce657eac30fe64fc50ad14f0e76a27700cb9e445f9"
     },
     "SrcWagon-JP": {
       "version": "26.6.24",
-      "sha256": "85b4575ecd63e752d03855606f36f8a3e38903b89e064fe9522184b7c516fba8"
+      "sha256": "84222453b659ba3667547ab9869a2d060716937b7522b8089e989c621093cfd0"
     },
     "SrcHelios-MainlandCN": {
       "version": "26.6.24",
