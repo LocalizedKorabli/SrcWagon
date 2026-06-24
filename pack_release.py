@@ -128,7 +128,7 @@ def load_existing_metadata():
     if path.exists():
         with open(path, "r", encoding="utf-8") as f:
             return json.load(f)
-    return {"version": "", "fonts": {}}
+    return {"fonts": {}}
 
 
 def pack_one(meta_key, fonts_src):
@@ -214,7 +214,7 @@ def trigger_deploy_hook():
 def main():
     ci_mode = "--ci" in sys.argv
     existing = load_existing_metadata()
-    metadata = {"version": existing.get("version", ""), "fonts": {}}
+    metadata = {"fonts": {}}
     built = 0
     skipped = 0
 
