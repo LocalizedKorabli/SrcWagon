@@ -7,6 +7,7 @@ SrcWagon / SrcHelios 发布包生成器
 """
 
 import os
+import sys
 import json
 import hashlib
 import shutil
@@ -211,19 +212,41 @@ def trigger_deploy_hook():
 # ============================================================
 
 def main():
+    ci_mode = "--ci" in sys.argv
     existing = load_existing_metadata()
-    metadata = {"version": "", "fonts": {}}
+    metadata = {"version": existing.get("version", ""), "fonts": {}}
     built = 0
     skipped = 0
 
     print("=" * 60)
-    print("  SrcWagon 发布包生成器")
+    if ci_mode:
+        print("  SrcWagon CI 发布 (仅上传 + 元数据)")
+    else:
+        print("  SrcWagon 发布包生成器")
     print("=" * 60)
 
     for proj in FONT_PROJECTS:
         key = proj["key"]
-        fonts_src = proj["src"]
+        arc_path = OUTPUT_DIR / f"{key}.7z"
 
+        # CI 模式：7z 必须已存在（本地打包提交），只上传 + 写元数据
+        if ci_mode:
+            if not arc_path.exists():
+                print(f"\n  [{key}] 跳过: {arc_path.name} 不存在")
+                continue
+
+            version = existing.get("fonts", {}).get(key, {}).get("version", "?")
+            file_hash = sha256_file(arc_path)
+            file_size = arc_path.stat().st_size
+
+            print(f"\n  [{key}] v{version} {file_size/1024/1024:.1f}MB  sha256={file_hash[:16]}...")
+            upload_to_r2(arc_path, f"{key}.7z")
+            metadata["fonts"][key] = {"version": version, "sha256": file_hash}
+            built += 1
+            continue
+
+        # 本地模式：完整流程
+        fonts_src = proj["src"]
         if not fonts_src.is_dir():
             print(f"\n  [{key}] 跳过: 源目录不存在")
             continue
@@ -232,11 +255,10 @@ def main():
         version = get_latest_date(proj["inputs"])
 
         # 检查是否需要跳过（已打包且版本一致）
-        arc_path = OUTPUT_DIR / f"{key}.7z"
         prev = existing.get("fonts", {}).get(key, {})
         if arc_path.exists() and prev.get("version") == version:
             print(f"\n  [{key}] v{version} 未变更, 跳过")
-            metadata["fonts"][key] = prev  # 沿用旧元数据
+            metadata["fonts"][key] = prev
             skipped += 1
             continue
 
