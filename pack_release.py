@@ -124,7 +124,7 @@ def sha256_file(path):
 
 def load_existing_metadata():
     """读取已有的 metadata.json"""
-    path = OUTPUT_DIR / "metadata.json"
+    path = WORKSPACE_DIR / "metadata.json"
     if path.exists():
         with open(path, "r", encoding="utf-8") as f:
             return json.load(f)
@@ -278,7 +278,7 @@ def main():
         built += 1
 
     # 写入 metadata.json
-    meta_path = OUTPUT_DIR / "metadata.json"
+    meta_path = WORKSPACE_DIR / "metadata.json"
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     with open(meta_path, "w", encoding="utf-8") as f:
         json.dump(metadata, f, indent=2, ensure_ascii=False)
