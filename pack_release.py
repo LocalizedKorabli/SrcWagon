@@ -141,7 +141,14 @@ def pack_one(meta_key, fonts_src):
     target_dir.mkdir(parents=True, exist_ok=True)
 
     for f in sorted(fonts_src.glob("*.ttf")):
-        shutil.copy2(f, target_dir / f.name)
+        # 统一命名为 SourceHanSansCN_WN_*.ttf（CN 写死）
+        import re
+        m = re.match(r"SourceHanSans\w+_(WN_\w+\.ttf)", f.name)
+        if m:
+            dst_name = f"SourceHanSansCN_{m.group(1)}"
+        else:
+            dst_name = f.name  # fallback
+        shutil.copy2(f, target_dir / dst_name)
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     arc_path = OUTPUT_DIR / f"{meta_key}.7z"
