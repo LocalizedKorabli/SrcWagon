@@ -1,0 +1,12 @@
+# 中间构建产物
+Releases/
+SrcHelios-CN/
+SrcWagon/
+Packages/
+temp_*
+
+# AI 会话记录
+.reasonix/
+
+# 超大基础字体（Source Han Sans VF ~150MB，构建者自行准备）
+base/SourceHanSans/
